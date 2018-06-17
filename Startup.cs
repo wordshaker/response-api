@@ -33,7 +33,7 @@ namespace response_api
 
             app.Use(async (context, next) =>
             {
-                using (var timer = statsDPublisher.StartTimer(""))
+                using (var timer = statsDPublisher.StartTimer("thing"))
                 {
                      await next();
                      timer.StatName = $"response-api.code.{context.Response.StatusCode}";                    
