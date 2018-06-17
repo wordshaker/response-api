@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using JustEat.StatsD;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,19 @@ namespace response_api
             {
                 app.UseDeveloperExceptionPage();
             }
+            var statsDConfig = new StatsDConfiguration{
+                Host = "graphite"
+            };
+            var statsDPublisher = new StatsDPublisher(statsDConfig);
+
+            app.Use(async (context, next) =>
+            {
+                using (var timer = statsDPublisher.StartTimer(""))
+                {
+                     await next();
+                     timer.StatName = $"response-api.code.{context.Response.StatusCode}";                    
+                }
+            });
 
             app.UseMvc();
         }
