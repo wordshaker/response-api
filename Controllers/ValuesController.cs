@@ -9,13 +9,13 @@ namespace response_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class CodeController : ControllerBase
     {
-        // POST api/values
+        // POST api/codes
         [HttpPost]
-        public ActionResult Post([FromBody] RequestedResponse value)
+        public ActionResult Post([FromBody] RequestedResponse codes)
         {
-            return StatusCode(value.ExpectedReturnedCode);
+            return StatusCode(codes.ExpectedReturnedCode);
         }
     }
 }
