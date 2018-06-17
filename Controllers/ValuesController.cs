@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using response_api.Models;
 
 namespace response_api.Controllers
 {
@@ -10,36 +11,21 @@ namespace response_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] RequestedResponse value)
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            switch (value.ExpectedReturnedCode)
+                 {
+                     case 200:
+                         return Ok(" Winner, winner, chicken dinner ");
+                     case 404:
+                         return NotFound(" Still haven't found what you're looking for ");
+                    case 500:
+                         return NotFound(" Internal Server Error ");
+                     default:
+                         return BadRequest(" You haven't provided a recognised ExpectedReturnedCode");
+                 }
         }
     }
 }
