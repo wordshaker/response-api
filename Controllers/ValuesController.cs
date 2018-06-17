@@ -15,17 +15,7 @@ namespace response_api.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] RequestedResponse value)
         {
-            switch (value.ExpectedReturnedCode)
-                 {
-                     case 200:
-                         return Ok(" Winner, winner, chicken dinner ");
-                     case 404:
-                         return NotFound(" Still haven't found what you're looking for ");
-                    case 500:
-                         return NotFound(" Internal Server Error ");
-                     default:
-                         return BadRequest(" You haven't provided a recognised ExpectedReturnedCode");
-                 }
+            return StatusCode(value.ExpectedReturnedCode);
         }
     }
 }
